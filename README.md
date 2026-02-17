@@ -245,11 +245,11 @@ Modifica le variabili CSS in `style.css`:
 
 | Ruolo | Nome | Responsabilità |
 |-------|------|----------------|
-| 👑 **CEO** | Fabio Franchi | Visione strategica & direzione |
+| 👑 **CEO** | Fabio F. | Visione strategica & direzione |
 | 🤝 **Co-CEO** | Matteo B. | Co-leadership & partnership |
-| 💻 **CTO** | Andrea S. | Architettura tecnica & sviluppo |
-| 🎨 **Lead Designer** | Luca M. | UI/UX & brand identity |
-| 🤖 **AI Assistant** | Claude | Supporto sviluppo & documentazione |
+| 💻 **CTO** | Orazio S. | Architettura tecnica & sviluppo |
+| 🎨 **Lead Designer** | Steven V. | UI/UX & brand identity |
+| 🤖 **AI Assistant** | Gemini | Supporto sviluppo & documentazione |
 
 </div>
 
