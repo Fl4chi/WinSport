@@ -673,3 +673,40 @@ nav ul {
 .ai-special .team-role {
     color: #4a90e2;
 }
+
+/* Header Tools (Wallet + Lang) */
+.header-tools {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Language Switcher Button */
+.lang-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 13px;
+    border: 2px solid var(--color-accent);
+    border-radius: 8px;
+    font-size: 1.5rem;
+    line-height: 1;
+    background: rgba(212, 175, 55, 0.12);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.lang-btn:hover {
+    background: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+    transform: scale(1.08);
+}
+
+/* Wallet Badge - Overriding absolute for header use */
+.header-tools .wallet-badge {
+    position: static;
+    margin: 0;
+}

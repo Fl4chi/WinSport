@@ -1,331 +1,224 @@
 # DOCUMENTAZIONE TECNICA DETTAGLIATA - WinSport
 
-Questa documentazione fornisce un'analisi tecnica completa, riga per riga e sezione per sezione, di tutto il codice sorgente del progetto "WinSport".
+Questa documentazione fornisce un'analisi tecnica completa del codice sorgente del progetto "WinSport", inclusa la nuova struttura multilingua.
 
 ---
 
 ## INDICE DEI CONTENUTI
 
-1.  [index.html (Home Page)](#1-indexhtml---home-page)
-2.  [servizi.html (Pagina Servizi)](#2-servizihtml---pagina-servizi)
-3.  [games.html (Nuova Pagina Giochi: Roulette & Blackjack)](#3-gameshtml---nuova-pagina-giochi)
-4.  [contatti.html (Modulo & Recapiti)](#4-contattihtml---pagina-contatti)
-5.  [chisiamo.html (Chi Siamo & Team)](#5-chisiamohtml---chi-siamo)
-6.  [style.css (Foglio di Stile)](#6-stylecss---design-system)
+1.  [Struttura del Progetto](#1-struttura-del-progetto)
+2.  [index.html — Splash Page di Selezione Lingua](#2-indexhtml--splash-page-di-selezione-lingua)
+3.  [it/ — Versione Italiana](#3-it--versione-italiana)
+4.  [en/ — Versione Inglese](#4-en--versione-inglese)
+5.  [Pagine del Sito (Home, Servizi, Games, Chi Siamo, Contatti)](#5-pagine-del-sito)
+6.  [style.css — Design System](#6-stylecss--design-system)
+7.  [Logica di Gioco JavaScript](#7-logica-di-gioco-javascript)
 
 ---
 
-## 1. `index.html` - Home Page
+## 1. Struttura del Progetto
 
-Il file `index.html` rappresenta la pagina principale e la vetrina del sito.
-
-### Struttura e Head (Linee 1-13)
-```html
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WinSport - Centro Scommesse Sportive</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat..." rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-</head>
 ```
-*   `<!DOCTYPE html>`: Dichiara che stiamo usando HTML5 moderno.
-*   `<html lang="it">`: Imposta la lingua italiana, essenziale per i lettori vocali e i motori di ricerca.
-*   `<meta charset="UTF-8">`: Garantisce che caratteri speciali (sì, è, à) ed emoji vengano visualizzati correttamente.
-*   `<meta name="viewport"...>`: Rende il sito "responsive" (adattabile) su cellulari, dicendo al browser di usare la larghezza reale del dispositivo.
-*   `<link href...fonts...>`: Scarica il font "Montserrat" da Google per dare un aspetto moderno e pulito.
-*   `<link rel="stylesheet"...>`: Collega il file CSS che contiene tutti i colori e le impaginazioni.
-
-### Header e Navigazione (Linee 17-38)
-```html
-<header>
-    <div class="container">
-        <div class="logo">...</div>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="servizi.html">Servizi</a></li>
-                <li><a href="games.html">Games</a></li>
-            </ul>
-            <div class="wallet-badge" id="wallet-display">...</div>
-        </nav>
-    </div>
-</header>
+Centro Scomesse/
+│
+├── index.html           ← Splash page (scelta lingua)
+│
+├── it/                  ← 🇮🇹 Versione italiana completa
+│   ├── index.html
+│   ├── servizi.html
+│   ├── games.html
+│   ├── chisiamo.html
+│   └── contatti.html
+│
+├── en/                  ← 🇬🇧 English version
+│   ├── index.html
+│   ├── services.html
+│   ├── games.html
+│   ├── aboutus.html
+│   └── contact.html
+│
+├── css/
+│   └── style.css        ← Foglio di stile condiviso da tutte le pagine
+│
+└── (pagine originali alla radice — con pulsante 🇬🇧 per cambio lingua rapido)
+    ├── servizi.html
+    ├── games.html
+    ├── chisiamo.html
+    └── contatti.html
 ```
-*   Contiene il logo (`<h1>WINSPORT</h1>`) e il menu di navigazione (`<nav>`).
-*   La classe `active` sul link "Home" indica visivamente all'utente su quale pagina si trova (diventa color oro).
-*   `id="wallet-display"`: Questo elemento è speciale. Viene controllato via JavaScript per mostrare il saldo aggiornato dell'utente in tempo reale.
 
-### Hero Section (Linee 41-47)
-```html
-<section class="hero">
-    <div class="hero-content">
-        <h2>WinSport – Il punto di riferimento...</h2>
-        <p>Segui le partite in diretta...</p>
-        <a href="games.html" class="btn">Gioca Ora</a>
-    </div>
-</section>
-```
-*   La classe `.hero` nel CSS imposta l'immagine di sfondo grande e scura.
-*   Il bottone "Scopri i Games" (`class="btn"`) è una "Call to Action" (invito all'azione) per portare subito l'utente alla parte divertente del sito.
-
-### Sezione Intro Chi Siamo (Linee 50-62)
-```html
-<section id="chisiamo-intro">
-    ...
-    <a href="chisiamo.html" class="btn btn-secondary">Scopri la nostra Storia e il Team</a>
-    ...
-</section>
-```
-*   Una breve premessa testuale.
-*   Il bottone usa `btn-secondary` (bordo oro, sfondo trasparente) per distinguerlo dal bottone principale della Hero.
-
-### Griglia Servizi (Linee 65-86)
-*   Usa un `div` con classe `services-grid`. Nel CSS, questo usa `display: grid` per creare colonne automatiche che si adattano allo schermo.
-*   Ogni servizio è un `service-card` che contiene un'icona (emoji), un titolo e una descrizione.
-
-### Sezione Caratteristiche (Linee 89-119)
-*   La lista `features-list` mostra i punti di forza (Wi-Fi, Schermi HD, ecc.).
-*   Le icone (❄️, 📺, 📶) rendono la lettura, immediata.
-
-### Footer (Linee 143-198)
-Il piè di pagina è diviso in colonne:
-1.  **Info**: Indirizzo e contatti.
-2.  **Orari**: Tabella sintetica degli orari.
-3.  **Menu**: Link rapidi alle pagine.
-4.  **Legal**: Badge "ADM", "18+" e avvertenze legali obbligatorie per legge per i siti di scommesse.
-
-### Script Saldo (Linee 201-214)
-```javascript
-document.addEventListener('DOMContentLoaded', () => {
-    const balanceSpan = document.getElementById('user-balance');
-    let balance = localStorage.getItem('walletBalance');
-    if (!balance) {
-        balance = 500; // Saldo iniziale
-        localStorage.setItem('walletBalance', balance);
-    }
-    if (balanceSpan) balanceSpan.textContent = balance;
-});
-```
-*   Questo codice parte appena la pagina è caricata (`DOMContentLoaded`).
-*   Cerca se esiste già un "portafoglio" (`walletBalance`) salvato nel browser dell'utente (`localStorage`).
-*   Se è la prima volta che entri (non c'è saldo), ti regala 500 crediti.
-*   Infine, scrive il numero dentro l'elemento del menu in alto a destra.
+**Navigazione multilingua**: Ogni pagina ha nell'header un pulsante con la bandiera dell'altra lingua (🇬🇧 o 🇮🇹), visibile nell'angolo in alto a destra del nav. Il `css/style.css` è condiviso da tutte le versioni grazie ai percorsi relativi (`../css/style.css`).
 
 ---
 
-## 2. `servizi.html` - Pagina Servizi
-(Precedentemente games.html)
+## 2. `index.html` — Splash Page di Selezione Lingua
 
-Questa pagina ora funge da catalogo dei servizi offerti (Scommesse, Ippica, Slot).
-La vecchia sezione di gioco è stata rimossa per fare spazio a una presentazione più pulita.
-Mantiene lo stesso stile delle card a zig-zag descritto in precedenza.
+È il **punto di ingresso del sito**. Non contiene JavaScript: usa solo HTML e CSS.
 
----
+### Tecnica: Effetti CSS Puri
 
-## 3. `games.html` - Nuova Pagina Giochi
+### Tecnica: Design Semplice e Coerente
 
-Questa è la nuova pagina dedicata al divertimento interattivo. Include **Roulette** e **Blackjack**.
+La splash page segue lo stesso stile minimalista e premium del resto del sito:
+- Sfondo scuro (`#121212`) con font **Montserrat**.
+- Logo dorato centrale con sottotitolo.
+- Card di selezione lingua con lo stesso stile delle `service-card` (bordo oro al passaggio del mouse).
 
-### Gestione Wallet (Portafoglio Condiviso)
-Il sistema di credito è centralizzato.
-```javascript
-let capitale = parseInt(localStorage.getItem('walletBalance')) || 1000;
-```
-*   **Persistenza**: Il saldo viene salvato nel browser (`localStorage`). Se cambi pagina e torni, i tuoi soldi sono ancora lì.
-*   **Condivisione**: Lo stesso saldo è visibile nell'header, ma modificabile solo giocando in questa pagina.
+L'assenza di animazioni complesse o script pesanti garantisce un caricamento istantaneo e una perfetta coerenza visiva.
 
-### Roulette
-Logica adattata per WinSport:
-*   Generazione dinamica della griglia (`#tavolo`) via JavaScript.
-*   Puntata su Numero (35:1) o Colore (1:1).
-*   Feedback visivo immediato con messaggi colorati.
+### Header e Wallet (Header Tools)
+Il wallet e il pulsante lingua sono integrati direttamente nel header principale attraverso il container `.header-tools`. Questo blocco è posizionato assolutamente nell'angolo in alto a destra del nav:
 
-### Blackjack
-Implementazione completa del classico gioco di carte:
-*   **Mazzo Infinito**: Simulato casualmente (`Math.random`).
-*   **Logica del Banco**: Il banco tira carta finché non arriva a 17 (regola standard).
-*   **Assi**: Gestiti dinamicamente (valgono 1 o 11 in base al totale).
-*   **Interfaccia**: Pulsanti "Carta" e "Stai" per interagire.
-
-(La pagina `dovisiamo.html` è stata rimossa come richiesto).
-
----
-
-## 4. `contatti.html` - Pagina Contatti
-
-Gestisce la comunicazione tra cliente e azienda.
-
-### Layout a Due Colonne (Linee 43-87)
-Usa `.contact-container`, che nel CSS è definito come:
-```css
-.contact-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Due colonne uguali */
-    gap: 50px;
-}
-```
-*   **Colonna Sinistra (`contact-info-col`)**: Mostra indirizzo, telefono (con emoji) e tabella orari.
-*   **Colonna Destra (`contact-form-col`)**: Contiene il modulo di contatto.
-
-### Modulo (Form)
 ```html
-<form class="contact-form" action="#" method="POST">
-    <input type="text" ... required>
-    <input type="email" ... required>
-    <textarea ... required></textarea>
-</form>
-```
-*   I campi `required` obbligano l'utente a compilare tutto prima di inviare.
-*   Gli stili `.contact-form input` nel CSS rendono i campi scuri con testo chiaro, integrandosi perfettamente nel tema dark.
-
----
-
-## 5. `chisiamo.html` - Chi Siamo
-
-Pagina istituzionale rinnovata con focus sul Team.
-
-### Testo Introduttivo (Linee 61-88)
-Descrive la missione aziendale ("Sicurezza, Professionalità e Accoglienza").
-
-### Sezione Team Aggiornata (Linee 91-137)
-```html
-<div class="team-section" id="team">
-    <div class="team-grid">
-        <!-- Membri del team... -->
-    </div>
+<div class="header-tools">
+    <a href="..." class="lang-btn">🇬🇧</a>
+    <div class="wallet-badge" id="wallet-display">💰 Saldo: ...</div>
 </div>
 ```
-*   `id="team"`: Permette di linkare direttamente questa sezione (es. `chisiamo.html#team`).
-*   La struttura ora usa `.team-grid` e `.team-card`, classi definite nel CSS per il nuovo layout verticale.
-*   **Ordine Gerarchico**: CEO -> Co-CEO -> CTO -> Designer -> AI.
-*   **Ruoli Aggiornati**: Matteo B. ora appare come Co-CEO.
+
+Il CSS utilizza `display: flex` per allineare i due elementi affiancati, distanziandoli in modo elegante. Nelle pagine che non richiedono il wallet (come Chi Siamo o Contatti), il container ospita solo il pulsante lingua, mantenendo però la posizione fissa.
 
 ---
 
-## 6. `style.css` - Design System
+## 3. `it/` — Versione Italiana
 
-File che controlla l'aspetto visivo di tutto il sito.
+Contiene la copia completa del sito in italiano. Ogni pagina:
+- Link relativi interni puntano alle altre pagine nella stessa cartella (`href="servizi.html"`)
+- Il CSS è caricato con `href="../css/style.css"` (percorso relativo alla radice)
+- Il pulsante lingua nell'header punta a `../en/[equivalente].html`
+
+---
+
+## 4. `en/` — Versione Inglese
+
+Struttura identica alla versione italiana, con tutti i testi tradotti in inglese. Differenze notevoli:
+- `chisiamo.html` → `aboutus.html`
+- `servizi.html` → `services.html`
+- `contatti.html` → `contact.html`
+- `games.html`: tutta la UI dei giochi è tradotta ("Hit", "Stand", "Dealer wins!", "Bust!", ecc.)
+- Il pulsante lingua punta a `../[equivalente].html` (versione italiana alla radice)
+
+---
+
+## 5. Pagine del Sito
+
+### Home (`index.html` in it/ o en/)
+
+*   **Struttura**: Hero → Intro Chi Siamo → Griglia Servizi → Caratteristiche → Orari → Footer.
+*   **Script Saldo**: Carica il saldo dal `localStorage` e lo mostra nell'header su `games.html`.
+
+### Servizi (`servizi.html` / `services.html`)
+
+*   Layout a "zig-zag" alternato (`flex-direction: row / row-reverse`) tra icona e testo.
+*   Tre servizi: Scommesse Sportive, Ippica, Sala Slot & VLT.
+
+### Games (`games.html`)
+
+Pagina interattiva con **Roulette** e **Blackjack**. Vedi sezione 7 per la logica JS.
+
+### Chi Siamo (`chisiamo.html` / `aboutus.html`)
+
+*   Testo istituzionale con i tre pilastri: Sicurezza, Professionalità, Accoglienza.
+*   Organigramma verticale del team: CEO → Co-CEO → CTO → Designer → AI Assistant.
+
+### Contatti (`contatti.html` / `contact.html`)
+
+*   Layout a due colonne: recapiti + orari a sinistra, form di contatto a destra.
+*   Campi `required` per la validazione lato browser.
+
+---
+
+## 6. `style.css` — Design System
 
 ### Variabili Globali (`:root`)
 ```css
 :root {
-    --color-bg: #121212;      /* Nero profondo */
-    --color-card: #1E1E1E;    /* Grigio scuro per le schede */
-    --color-accent: #D4AF37;  /* ORO METALLICO - Colore chiave */
+    --color-bg: #121212;      /* Nero "OLED" */
+    --color-card: #1E1E1E;    /* Grigio schede */
+    --color-accent: #D4AF37;  /* Oro Metallico */
     --font-main: 'Montserrat', sans-serif;
 }
 ```
-Cambiare questi valori cambierebbe i colori in tutto il sito istantaneamente.
+Cambiare `--color-accent` cambierebbe il colore dorato in tutto il sito istantaneamente.
 
-### Analisi Approfondita del Design (CSS & Grafica)
-
-Il file `style.css` non è solo un elenco di colori, ma un sistema di design studiato per dare un'immagine "Premium" e professionale.
-
-#### 1. Sistema di Colori e Variabili (`:root`)
+### Header Tools (`.header-tools`)
 ```css
-:root {
-    --color-bg: #121212;      /* Nero "OLED" per profondità */
-    --color-card: #1E1E1E;    /* Grigio per distacco visivo */
-    --color-accent: #D4AF37;  /* Oro Metallico (Lusso) */
-    --shadow-card: 0 4px 6px rgba(0,0,0,0.3);
+.header-tools {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.lang-btn {
+    display: inline-flex;
+    padding: 7px 13px;
+    border: 2px solid var(--color-accent);
+    border-radius: 8px;
+    font-size: 1.5rem;
+    background: rgba(212,175,55,0.12);
 }
 ```
-*   Perché l'Oro? L'oro su nero è lo standard universale per i centri scommesse e i casinò di lusso.
-*   Uso delle Variabili: In tutto il file usiamo `var(--color-accent)`. Questo significa che se volessimo cambiare il colore del sito da Oro a Rosso, basterebbe cambiare UNA riga sopra.
+*   `.header-tools` garantisce che tutti gli elementi interattivi dell'header (lingua e saldo) siano raggruppati stabilmente a destra.
+*   Il pulsante lingua mostra l'emoji della bandiera dell'altra lingua, grande e leggibile.
+*   Il wallet badge, quando presente, appare a destra del pulsante lingua, mantenendo uno stile premium coerente.
 
-#### 2. Effetti Moderni: Glassmorphism e Gradienti
-*   **Gradients**: Molti elementi (come i bottoni e le card) non hanno un colore piatto. Usano `linear-gradient(145deg, #1a1a1a, #252525)`. Questo crea una sottile ombra interna che dà l'idea di una superficie fisica reale.
-*   **Neon Glow**: Il badge del saldo (`.wallet-badge`) usa `box-shadow: 0 0 15px rgba(212, 175, 55, 0.3)`. Questo crea un effetto "tubo al neon" che attira l'attenzione senza essere fastidioso.
+### Effetti e Animazioni
 
-#### 3. Animazioni e Interattività (Micro-interazioni)
-Le animazioni sono studiate per rendere il sito "vivo":
-*   **Transizioni Fluide**: Ogni volta che passi il mouse su un link o un bottone, il colore non cambia all'istante, ma in 0,3 secondi (`transition: 0.3s`). Questo rende l'esperienza utente molto più rilassante.
-*   **Hover Scaling**: In `chisiamo.html`, le card dell'organigramma si ingrandiscono leggermente (`transform: scale(1.08)`) ed evidenziano il bordo in oro. È un feedback visivo che conferma all'utente "sto interagendo con questo elemento".
-*   **Keyframes (Shake e Spin)**:
-    - `@keyframes shake`: Usata nella roulette quando il saldo è basso per comunicare errore visivamente.
-    - `transition: transform 3s cubic-bezier(...)`: Usata nella roulette per simulare l'attrito fisico che rallenta la ruota gradualmente prima di fermarsi.
-
-#### 4. Layout Responsive (Mobile First)
-*   **Flexbox & Grid**: Usiamo `display: flex` e `display: grid` ovunque. Sono gli strumenti più potenti del CSS moderno per allineare gli elementi.
-*   **Media Queries**: Nelle ultime righe del file trovi `@media (max-width: 768px)`. Questo blocco di codice si attiva SOLO se lo schermo è piccolo. Cambia la navigazione e i servizi da righe a colonne per permettere una lettura facile sul telefono.
+*   **Neon Glow** (`.wallet-badge`): `box-shadow: 0 0 15px rgba(212,175,55,0.3)`.
+*   **Hover Scaling** (`.team-card`): `transform: scale(1.08)` + bordo oro.
+*   **Transizioni fluide**: `transition: 0.3s` su tutti i link e bottoni.
+*   **Grid Responsive**: `display: grid` con `auto-fit` per adattarsi a mobile.
+*   **Media Query `@media (max-width: 768px)`**: Nav e colonne passano a layout verticale su mobile.
 
 ---
 
-## 7. Approfondimento Tecnico: Logica di Gioco (JavaScript)
+## 7. Logica di Gioco JavaScript
 
-In questa sezione analizziamo nel dettaglio come funzionano le funzioni chiave dei giochi in `games.html`.
+Presente in `games.html` (versione IT e EN). Il wallet è salvato nel `localStorage` e condiviso tra pagine.
 
-### ROULETTE: `spinWheel(choice)`
+### Wallet Condiviso
+```javascript
+let capitale = parseInt(localStorage.getItem('walletBalance')) || 1000;
 
-Questa funzione gestisce l'intera animazione e logica della roulette.
+function aggiornaWallet() {
+    document.getElementById("user-balance").textContent = capitale;
+    localStorage.setItem('walletBalance', capitale);
+}
+```
+*   `localStorage` è una memoria permanente del browser: il saldo sopravvive al reload della pagina.
 
-1.  **Verifica Saldo**:
-    ```javascript
-    if (balance < cost) { ... }
-    ```
-    Controlla se l'utente ha abbastanza crediti (50). Se no, fa vibrare il badge del portafoglio (`animation: shake`).
+### Roulette
+*   **Griglia dinamica**: 37 bottoni (0-36) generati via JS con colori corretti (verde, rosso, nero).
+*   **Puntata numero** → paga 35:1 in caso di vittoria.
+*   **Puntata colore** (Rosso/Nero) → paga 1:1. Lo zero fa perdere.
 
-2.  **Detrazione Costo**:
-    ```javascript
-    balance -= cost;
-    ```
-    Toglie subito i soldi, come una vera macchinetta che "mangia" il gettone.
+### Blackjack
 
-3.  **Determinismo (Il trucco)**:
-    Il sito non aspetta che la ruota si fermi per sapere chi ha vinto. Decide SUBITO.
-    ```javascript
-    const isWin = Math.random() < 0.5; // Testa o croce (50%)
-    ```
-    Se `isWin` è vero, forza la ruota a fermarsi sul colore scelto dall'utente. Altrimenti, la forza sul colore opposto.
+**Funzione `totale(mano)`** — gestione intelligente degli Assi:
+```javascript
+while(assi > 0 && somma + 10 <= 21) {
+    somma += 10;
+    assi--;
+}
+```
+L'Asso vale 1 di default, ma viene promosso a 11 automaticamente se non causa sballata.
 
-4.  **Calcolo Angolo (Matematica)**:
-    La ruota è un'immagine o elemento CSS. Per farla fermare su un colore specifico, dobbiamo ruotarla di un numero preciso di gradi.
-    *   La ruota ha 20 spicchi -> 18 gradi per spicchio.
-    *   I segmenti pari (0, 2, 4...) sono Rossi.
-    *   I segmenti dispari (1, 3, 5...) sono Neri.
-    Il codice sceglie un indice a caso (es. segmento 4) che corrisponde al colore vincente e calcola i gradi totali (`targetSegment * 18`).
-
-5.  **Animazione CSS**:
-    Applica una rotazione enorme (es. `rotate(1800deg)`) tramite CSS `transform`. Grazie alla proprietà `transition`, il browser anima questo cambiamento in modo fluido per 3 secondi.
-
-### BLACKJACK: `iniziaMano()`, `chiediCarta()`, `stai()`
-
-Il Blackjack usa un "Vettore di Stato" per tenere traccia delle carte.
-
-1.  **Mazzo Infinito**:
-    Non usiamo un mazzo di 52 carte che si esaurisce. Ogni carta è generata al momento con `Math.random() * 13`. Questo simula un casinò che rimescola dopo ogni mano (impossibile contare le carte).
-
-2.  **Valore Assi (Funzione `totale(mano)`)**:
-    Questa è la parte più intelligente.
-    ```javascript
-    while(assi > 0 && somma + 10 <= 21){
-        somma += 10;
-        assi--;
-    }
-    ```
-    Calcola la somma base considerando l'Asso come 1. Poi, SE hai un Asso E se aggiungendo 10 non sballi (non superi 21), trasforma quell'Asso in un 11. Questo avviene automaticamente a ogni carta pescata.
-
-3.  **Intelligenza Artificiale del Banco (`stai()`)**:
-    Quando il giocatore si ferma, il banco gioca da solo:
-    ```javascript
-    while(totale(manoBanco) < 17){
-        manoBanco.push(pescaCarta());
-    }
-    ```
-    È una regola fissa: il banco DEVE tirare se ha 16 o meno. DEVE stare se ha 17 o più. Non fa scelte umane, segue un algoritmo.
+**IA del Banco**:
+```javascript
+while(totale(manoBanco) < 17) {
+    manoBanco.push(pescaCarta());
+}
+```
+Il banco segue la regola standard: tira obbligatoriamente con 16 o meno, si ferma con 17+.
 
 ---
 
 ## 8. Conclusioni Tecniche
 
-
-Il progetto WinSport è stato costruito seguendo i massimi standard del web moderno (W3C):
-- **HTML5 Semantico**: Per una corretta lettura dei motori di ricerca.
-- **CSS3 Avanzato**: Per un'estetica di alto livello senza appesantire il sito con immagini pesanti.
-- **JS Algoritmico**: Per una logica di gioco precisa e "C++ style".
-
-Tutto il codice è commentato e modulare, pronto per essere espanso con nuove funzionalità.
+Il progetto WinSport è costruito seguendo gli standard del web moderno:
+- **HTML5 Semantico**: Per SEO e accessibilità.
+- **CSS3 Avanzato**: Glassmorphism, gradienti, animazioni pure CSS (niente librerie).
+- **JavaScript Algoritmico**: Logica di gioco precisa, wallet persistente via `localStorage`.
+- **Architettura Multilingua**: Due versioni complete (IT/EN) con splash page di selezione, senza framework né server — funziona aprendo i file HTML direttamente nel browser.

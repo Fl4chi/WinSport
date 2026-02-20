@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games | WinSport</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .game-container {
+            background: var(--color-card);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-input {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background: #222;
+            color: white;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .game-message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            min-height: 1.5em;
+            text-align: center;
+        }
+
+        #tavolo {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 6px;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width:768px) {
+            #tavolo {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        #manoBanco,
+        #manoGiocatore {
+            font-size: 1.5rem;
+            margin: 15px 0;
+            letter-spacing: 5px;
+            min-height: 40px;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid #333;
+            background: #222;
+            border-radius: 5px;
+            outline: none;
+            list-style: none;
+            text-align: center;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details summary::after {
+            content: ' ▼';
+            font-size: 0.8em;
+        }
+
+        details[open] summary::after {
+            content: ' ▲';
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo"><a href="index.html">
+                    <h1>WINSPORT</h1><span>CENTRO SCOMMESSE SPORTIVE</span>
+                </a></div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="servizi.html">Servizi</a></li>
+                    <li><a class="active" href="games.html">Games</a></li>
+                    <li><a href="chisiamo.html">Chi siamo</a></li>
+                    <li><a href="contatti.html">Contatti</a></li>
+                </ul>
+                <div class="header-tools">
+                    <a href="../en/games.html" class="lang-btn" title="Switch to English">🇬🇧</a>
+                    <div class="wallet-badge" id="wallet-display">💰 Saldo: <span id="user-balance">1000</span> CR</div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <h2 class="section-title">Roulette</h2>
+            <div class="game-container">
+                <input type="number" id="puntataRoulette" placeholder="Inserisci puntata" class="game-input">
+                <div id="tavolo"></div>
+                <div style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
+                    <button class="bet-btn red" onclick="giocaColore('rosso')">Rosso</button>
+                    <button class="bet-btn black" onclick="giocaColore('nero')">Nero</button>
+                </div>
+                <div id="rouletteOutput" class="game-message"></div>
+                <div class="game-rules" style="margin-top:30px; border-top:1px solid #333; padding-top:20px;">
+                    <h3 style="color:var(--color-accent); font-size:1.2rem; margin-bottom:10px;">Il Re dei Giochi</h3>
+                    <p style="color:#ccc; font-size:0.9rem; line-height:1.6; margin-bottom:10px;">La nostra Roulette
+                        Europea ti offre l'emozione pura del tavolo verde direttamente a casa tua. Il gioco è semplice
+                        ed elegante: una pallina viene lanciata in una ruota in rotazione e tu devi indovinare dove si
+                        fermerà.</p>
+                    <ul style="color:#ccc; font-size:0.9rem; line-height:1.6; padding-left:20px; text-align:left;">
+                        <li><strong>Numero Secco</strong>: Punta su un numero specifico (0-36). Paga <strong>35
+                                volte</strong> la posta!</li>
+                        <li><strong>Rosso o Nero</strong>: Scommetti sul colore. Probabilità quasi del 50%, vincita alla
+                            pari (1:1).</li>
+                    </ul>
+                    <p style="color:#666; font-size:0.8rem; margin-top:10px;"><em>Attenzione allo Zero (Verde): se esce
+                            lui, tutte le puntate su Rosso/Nero e sui numeri perdono.</em></p>
+                </div>
+            </div>
+
+            <!-- BLACKJACK -->
+            <h2 class="section-title" style="margin-top:80px;">Blackjack</h2>
+            <div class="game-container" style="text-align:center;">
+                <input type="number" id="puntataBlackjack" placeholder="Inserisci puntata" class="game-input">
+                <button class="btn" onclick="iniziaMano()">Gioca Mano</button>
+                <hr style="margin:30px auto; border-color:#333; max-width:80%;">
+                <h3>Banco</h3>
+                <div id="manoBanco"></div>
+                <div id="totaleBanco" style="color:var(--color-accent);"></div>
+                <hr style="margin:30px auto; border-color:#333; max-width:80%;">
+                <h3>Giocatore</h3>
+                <div id="manoGiocatore"></div>
+                <div id="totaleGiocatore" style="color:var(--color-accent);"></div>
+                <div class="game-controls">
+                    <button class="btn btn-secondary" onclick="chiediCarta()">Carta</button>
+                    <button class="btn" onclick="stai()">Stai</button>
+                </div>
+                <div id="blackjackOutput" class="game-message"></div>
+                <div class="game-rules" style="margin-top:30px; border-top:1px solid #333; padding-top:20px;">
+                    <h3 style="color:var(--color-accent); font-size:1.2rem; margin-bottom:10px;">Sfida il Banco a 21
+                    </h3>
+                    <p style="color:#ccc; font-size:0.9rem; line-height:1.6; margin-bottom:10px;">Il Blackjack è una
+                        sfida di abilità e fortuna contro il dealer. Avvicinati il più possibile a <strong>21</strong>,
+                        senza mai superarlo.</p>
+                    <ul style="color:#ccc; font-size:0.9rem; line-height:1.6; list-style-type:none; padding:0;">
+                        <li style="margin-bottom:5px;">🔥 <strong>Carte e Valori</strong>: Le figure valgono 10. L'Asso
+                            vale 1 o 11.</li>
+                        <li style="margin-bottom:5px;">✋ <strong>Le tue Mosse</strong>: "Carta" se vuoi un'altra carta.
+                            "Stai" quando ti senti sicuro.</li>
+                        <li style="margin-bottom:5px;">🤖 <strong>Regola del Banco</strong>: Il banco deve tirare fino a
+                            raggiungere almeno 17.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WinSport</h3>
+                    <ul class="contact-info">
+                        <li>📍 Via Roma 123, Brescia</li>
+                        <li>📞 030 1234567</li>
+                        <li>✉️ info@winsport.it</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Orari</h3>
+                    <ul class="contact-info">
+                        <li>Lun-Ven: 9:00-22:00</li>
+                        <li>Sab: 9:00-23:00</li>
+                        <li>Dom: 10:00-21:00</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Menu</h3>
+                    <ul class="contact-info">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="servizi.html">Servizi</a></li>
+                        <li><a href="games.html">Games</a></li>
+                        <li><a href="chisiamo.html">Chi siamo</a></li>
+                        <li><a href="contatti.html">Contatti</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-legal">
+                <div class="legal-icons">
+                    <div class="adm-badge">ADM</div>
+                    <div class="warning-18">18+</div>
+                    <div class="adm-badge">GIOCA RESPONSABILE</div>
+                </div>
+                <p class="legal-text">Il gioco è vietato ai minori di 18 anni e può causare dipendenza patologica.
+                    Concessione GAD n. 15000.</p>
+            </div>
+            <div class="copyright">© 2026 WinSport Centro Scommesse - Tutti i diritti riservati</div>
+        </div>
+    </footer>
+
+    <script>
+        let capitale = parseInt(localStorage.getItem('walletBalance')) || 1000;
+        function aggiornaWallet() { document.getElementById("user-balance").textContent = capitale; localStorage.setItem('walletBalance', capitale); }
+        aggiornaWallet();
+
+        const numeriRossi = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+        const tavolo = document.getElementById("tavolo");
+        for (let i = 0; i <= 36; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i; btn.style.padding = "10px"; btn.style.fontWeight = "bold"; btn.style.borderRadius = "5px"; btn.style.border = "none"; btn.style.cursor = "pointer"; btn.style.color = "white"; btn.style.fontSize = "1rem";
+            if (i === 0) btn.style.background = "green";
+            else if (numeriRossi.includes(i)) btn.style.background = "#e74c3c";
+            else { btn.style.background = "#111"; btn.style.border = "1px solid #444"; }
+            btn.onclick = () => giocaNumero(i);
+            tavolo.appendChild(btn);
+        }
+
+        function generaNumero() { return Math.floor(Math.random() * 37); }
+        function determinaColore(n) { if (n === 0) return "verde"; return numeriRossi.includes(n) ? "rosso" : "nero"; }
+
+        function controllaPuntataRoulette() {
+            let p = parseFloat(document.getElementById("puntataRoulette").value);
+            if (!p || p <= 0 || p > capitale) { document.getElementById("rouletteOutput").textContent = "Puntata non valida!"; document.getElementById("rouletteOutput").style.color = "#ff4444"; return null; }
+            return p;
+        }
+
+        function giocaNumero(n) {
+            let p = controllaPuntataRoulette(); if (!p) return;
+            let num = generaNumero();
+            if (n === num) { capitale += p * 35; document.getElementById("rouletteOutput").textContent = "🎉 Numero " + num + "! Hai vinto 35:1!"; document.getElementById("rouletteOutput").style.color = "#4CAF50"; }
+            else { capitale -= p; document.getElementById("rouletteOutput").textContent = "Numero " + num + ". Hai perso!"; document.getElementById("rouletteOutput").style.color = "var(--color-accent)"; }
+            aggiornaWallet();
+        }
+
+        function giocaColore(scelta) {
+            let p = controllaPuntataRoulette(); if (!p) return;
+            let num = generaNumero(); let col = determinaColore(num);
+            if (num !== 0 && col === scelta) { capitale += p; document.getElementById("rouletteOutput").textContent = "🎉 " + num + " " + col + "! Hai vinto!"; document.getElementById("rouletteOutput").style.color = "#4CAF50"; }
+            else { capitale -= p; document.getElementById("rouletteOutput").textContent = "Numero " + num + ". Hai perso!"; document.getElementById("rouletteOutput").style.color = "var(--color-accent)"; }
+            aggiornaWallet();
+        }
+
+        let manoGiocatore = [], manoBanco = [], puntataBJ = 0, giocoAttivo = false;
+        function pescaCarta() { let c = Math.floor(Math.random() * 13) + 1; if (c > 10) c = 10; return c; }
+        function totale(mano) { let s = 0, a = 0; mano.forEach(c => { s += c; if (c === 1) a++; }); while (a > 0 && s + 10 <= 21) { s += 10; a--; } return s; }
+
+        function iniziaMano() {
+            puntataBJ = parseFloat(document.getElementById("puntataBlackjack").value);
+            if (!puntataBJ || puntataBJ <= 0 || puntataBJ > capitale) { document.getElementById("blackjackOutput").textContent = "Puntata non valida!"; document.getElementById("blackjackOutput").style.color = "#ff4444"; return; }
+            manoGiocatore = [pescaCarta(), pescaCarta()]; manoBanco = [pescaCarta(), pescaCarta()]; giocoAttivo = true; aggiornaBJ(); document.getElementById("blackjackOutput").textContent = "";
+        }
+
+        function aggiornaBJ() {
+            document.getElementById("manoGiocatore").textContent = manoGiocatore.join(" ");
+            document.getElementById("manoBanco").textContent = manoBanco.join(" ");
+            document.getElementById("totaleGiocatore").textContent = "Totale: " + totale(manoGiocatore);
+            document.getElementById("totaleBanco").textContent = "Totale: " + totale(manoBanco);
+        }
+
+        function chiediCarta() {
+            if (!giocoAttivo) return;
+            manoGiocatore.push(pescaCarta()); aggiornaBJ();
+            if (totale(manoGiocatore) > 21) { capitale -= puntataBJ; giocoAttivo = false; document.getElementById("blackjackOutput").textContent = "Sballato! Hai perso."; document.getElementById("blackjackOutput").style.color = "#ff4444"; aggiornaWallet(); }
+        }
+
+        function stai() {
+            if (!giocoAttivo) return;
+            while (totale(manoBanco) < 17) manoBanco.push(pescaCarta());
+            let tg = totale(manoGiocatore), tb = totale(manoBanco);
+            if (tb > 21 || tg > tb) { capitale += puntataBJ; document.getElementById("blackjackOutput").textContent = "Hai vinto!"; document.getElementById("blackjackOutput").style.color = "#4CAF50"; }
+            else if (tg === tb) { document.getElementById("blackjackOutput").textContent = "Pareggio!"; document.getElementById("blackjackOutput").style.color = "white"; }
+            else { capitale -= puntataBJ; document.getElementById("blackjackOutput").textContent = "Vince il banco!"; document.getElementById("blackjackOutput").style.color = "#f44336"; }
+            giocoAttivo = false; aggiornaBJ(); aggiornaWallet();
+        }
+    </script>
+</body>
+
+</html>
