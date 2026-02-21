@@ -40,14 +40,11 @@ Centro Scomesse/
 ├── css/
 │   └── style.css        ← Foglio di stile condiviso da tutte le pagine
 │
-└── (pagine originali alla radice — con pulsante 🇬🇧 per cambio lingua rapido)
-    ├── servizi.html
-    ├── games.html
-    ├── chisiamo.html
-    └── contatti.html
+└── DOCUMENTAZIONE.md    ← Questo file
 ```
 
-**Navigazione multilingua**: Ogni pagina ha nell'header un pulsante con la bandiera dell'altra lingua (🇬🇧 o 🇮🇹), visibile nell'angolo in alto a destra del nav. Il `css/style.css` è condiviso da tutte le versioni grazie ai percorsi relativi (`../css/style.css`).
+**Navigazione multilingua**: Ogni pagina ha nell'header un pulsante con la bandiera dell'altra lingua (🇬🇧 o 🇮🇹), visibile nell'angolo in alto a destra. Il sistema di navigazione è ora completamente confinato nelle cartelle di lingua (`it/` e `en/`), con la sola splash page nella radice per smistare l'utente.
+
 
 ---
 
